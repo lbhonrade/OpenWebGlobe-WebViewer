@@ -3295,3 +3295,15 @@ function ogNavKeyUp(scene_id, keycode)
    }
 }
 goog.exportSymbol('ogNavKeyUp', ogNavKeyUp);
+//------------------------------------------------------------------------------
+/**
+ * @description Set object name
+ * @param {number} object_id the id of the object
+ * @param {string} name the custom object name
+ */
+function ogGetObjectById(object_id)
+{
+   return _GetObjectFromId(object_id);
+}
+goog.exportSymbol('ogGetObjectById', ogGetObjectById);
+//------------------------------------------------------------------------------
