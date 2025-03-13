@@ -12,10 +12,11 @@
 
 goog.provide('owg.ogContext');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
 goog.require('owg.engine3d');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 // CALLBACK FUNCTIONS FOR ENGINE
@@ -333,7 +334,7 @@ ogContext.prototype.ParseOptions = function(options)
    this.engine = new engine3d();
    this.engine.owg = this;
 
-   if (goog.isDef(options["new"]))
+   if (ClosureUtils.isDef(options["new"]))
    {
       var newdiv = document.createElement("div");
       document.body.appendChild(newdiv);

@@ -16,6 +16,7 @@ goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
 goog.require('owg.ogWorld');
 goog.require('owg.ogCamera');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 /**
@@ -55,21 +56,21 @@ ogScene.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.debug.Logger.getLogger('owg.ogScene').warning("** ERROR: no options for scene creation!");
+      goog.log.getLogger('owg.ogScene').warning("** ERROR: no options for scene creation!");
       return;  // no options!!
    }
    
-   if (goog.isDef(options["type"]))
+   if (ClosureUtils.isDef(options["type"]))
    {
       this.scenetype = options["type"];
    }
 
-   if (goog.isDef(options["rendertotexture"]))
+   if (ClosureUtils.isDef(options["rendertotexture"]))
    {
       this.rendertotexture = options["rendertotexture"];
    }
    
-   if (goog.isDef(options["shownavigation"])) 
+   if (ClosureUtils.isDef(options["shownavigation"])) 
    {
    	this.shownavigation = options["shownavigation"];
    }
@@ -231,7 +232,7 @@ ogScene.prototype.EnableStereo = function(bEnable, options)
    /** @type {RenderObjectNode} */
    var ro = context.engine.scene.nodeRenderObject;
    ro.stereoscopic = bEnable;
-   if (goog.isDef(options["topbottom"]) && options["topbottom"])
+   if (ClosureUtils.isDef(options["topbottom"]) && options["topbottom"])
    {
       ro.stereomode = RenderObjectNode.STEREOMODE.TOPBOTTOM;
    }

@@ -19,6 +19,7 @@ goog.require('owg.DynamicNavigationNode');
 goog.require('owg.RenderObjectNode');
 goog.require('owg.TraversalState');
 goog.require('owg.mat4');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 /**
@@ -41,7 +42,7 @@ function SceneGraph(engine, options)
    this.nodeCamera = new CameraNode();                      // Camera Node (for projection matrix)
    this.nodeRenderObject = new RenderObjectNode(options);   // Render Object Node (render openglobe objects, e.g. the virtual globe)
       
-   if (!goog.isDef(options["shownavigation"])) 
+   if (!ClosureUtils.isDef(options["shownavigation"])) 
    {
       options["shownavigation"] = true;
    }
@@ -172,7 +173,7 @@ SceneGraph.prototype.SetNavigationMode = function(options)
 {
    var lng, lat, elv;
    var yaw, pitch, roll;
-   if (goog.isDef(options["type"]))
+   if (ClosureUtils.isDef(options["type"]))
    {
       if (options["type"] == "globe")
       {
@@ -206,12 +207,12 @@ SceneGraph.prototype.SetNavigationMode = function(options)
       pitch = this.nodeNavigation._pitch;
       roll = this.nodeNavigation._roll;
 
-      if (goog.isDef(options["Longitude"])) { lng = options["Longitude"];}
-      if (goog.isDef(options["Latitude"])) { lat = options["Latitude"];}
-      if (goog.isDef(options["Elevation"])) { elv = options["Elevation"];}
-      if (goog.isDef(options["Yaw"])) { yaw = MathUtils.Deg2Rad(options["Yaw"]);}
-      if (goog.isDef(options["Pitch"])) { pitch = MathUtils.Deg2Rad(options["Pitch"]);}
-      if (goog.isDef(options["Roll"])) { roll = MathUtils.Deg2Rad(options["Roll"]);}
+      if (ClosureUtils.isDef(options["Longitude"])) { lng = options["Longitude"];}
+      if (ClosureUtils.isDef(options["Latitude"])) { lat = options["Latitude"];}
+      if (ClosureUtils.isDef(options["Elevation"])) { elv = options["Elevation"];}
+      if (ClosureUtils.isDef(options["Yaw"])) { yaw = MathUtils.Deg2Rad(options["Yaw"]);}
+      if (ClosureUtils.isDef(options["Pitch"])) { pitch = MathUtils.Deg2Rad(options["Pitch"]);}
+      if (ClosureUtils.isDef(options["Roll"])) { roll = MathUtils.Deg2Rad(options["Roll"]);}
 
       this.nodeNavigation.SetPosition(lng, lat, elv);
       this.nodeNavigation.SetOrientation(yaw, pitch, roll);

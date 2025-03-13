@@ -14,7 +14,7 @@ goog.provide('owg.ogBillboard');
 goog.require('owg.ObjectDefs');
 goog.require('owg.Billboard');
 goog.require('owg.ogObject');
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 
 //------------------------------------------------------------------------------
 /**
@@ -49,19 +49,19 @@ ogBillboard.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.debug.Logger.getLogger('owg.ogBillboard').warning("** ERROR: no options for billboard creation!");
+      goog.log.getLogger('owg.ogBillboard').warning("** ERROR: no options for billboard creation!");
       return;  // no options!!
    }
    
    if (this.parent == null)
    {
-      goog.debug.Logger.getLogger('owg.ogBillboard').warning("** ERROR: no parent!");
+      goog.log.getLogger('owg.ogBillboard').warning("** ERROR: no parent!");
       return;
    }
    
    if (this.parent.type != OG_OBJECT_SCENE)
    {
-      goog.debug.Logger.getLogger('owg.ogBillboard').warning("** ERROR: parent is not scene!");
+      goog.log.getLogger('owg.ogBillboard').warning("** ERROR: parent is not scene!");
       return;
    }
    

@@ -18,6 +18,7 @@ goog.require('owg.GeometryRenderer');
 goog.require('owg.BillboardRenderer');
 goog.require('owg.ScenegraphNode');
 goog.require('owg.AoeImageRenderer');
+goog.require('owg.ClosureUtils');
 
 /**
  * Render Object Node. Renders OpenWebGlobe objects, including virtual globe 
@@ -139,7 +140,7 @@ function RenderObjectNode(options)
                this._doRender(this.leftImage, 4);
 
                // Combineright and left image.. render them using optimized anaglyph
-               if (!goog.isNull(this.leftImage.blitMesh))
+               if (!ClosureUtils.isNull(this.leftImage.blitMesh))
                {
                   // Black & White Anaglyph:
                   //this.leftImage.blitMesh.colormat0.SetFromArray([.299,.587,.114,0,  0,0,0,0, 0,0,0,0, 0,0,0,1]);

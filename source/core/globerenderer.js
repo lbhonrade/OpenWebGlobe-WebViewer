@@ -11,7 +11,7 @@
 
 goog.provide('owg.GlobeRenderer');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.Texture');
 goog.require('owg.GlobeCache');
 goog.require('owg.MercatorQuadtree');
@@ -28,6 +28,7 @@ goog.require('owg.WMSImageLayer');
 goog.require('owg.WMTSImageLayer');
 goog.require('owg.owgGeometryLayer');
 goog.require('owg.owgPointCloudLayer');
+goog.require('owg.ClosureUtils');
 //------------------------------------------------------------------------------
 /**
  * @typedef {{
@@ -193,13 +194,13 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
    /** @type {number} */
    var index = -1;
 
-   if (goog.isDef(options["service"]))
+   if (ClosureUtils.isDef(options["service"]))
    {
       // i3d tile layout (deprecated)
       if (options["service"] == "i3d")
       {
          // i3d tile service
-         if (goog.isDef(options["url"]) && goog.isDef(options["layer"]))
+         if (ClosureUtils.isDef(options["url"]) && ClosureUtils.isDef(options["layer"]))
          {
             if (options["url"].length>0)
             {
@@ -210,11 +211,11 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
 
                // Create i3d layer:
                var imgLayer = new i3dImageLayer();
-               if (goog.isDef(options["minlod"]))
+               if (ClosureUtils.isDef(options["minlod"]))
                {
                   imgLayer.userminlod = options["minlod"];
                }
-               if (goog.isDef(options["maxlod"]))
+               if (ClosureUtils.isDef(options["maxlod"]))
                {
                   imgLayer.usermaxlod = options["maxlod"];
                }
@@ -228,14 +229,14 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // OpenStreetMap tile layout
       else if (options["service"] == "osm")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0)
          {
             var imgLayer = new OSMImageLayer();
-            if (goog.isDef(options["minlod"]))
+            if (ClosureUtils.isDef(options["minlod"]))
             {
                imgLayer.userminlod = options["minlod"];
             }
-            if (goog.isDef(options["maxlod"]))
+            if (ClosureUtils.isDef(options["maxlod"]))
             {
                imgLayer.usermaxlod = options["maxlod"];
             }
@@ -248,14 +249,14 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // TMS service
       else if (options["service"] == "tms")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0)
          {
             var imgLayer = new TMSImageLayer();
-            if (goog.isDef(options["minlod"]))
+            if (ClosureUtils.isDef(options["minlod"]))
             {
                imgLayer.userminlod = options["minlod"];
             }
-            if (goog.isDef(options["maxlod"]))
+            if (ClosureUtils.isDef(options["maxlod"]))
             {
                imgLayer.usermaxlod = options["maxlod"];
             }
@@ -268,15 +269,15 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // WMTS service
       else if (options["service"] == "wmts")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0
-                && goog.isDef(options["layer"]) && options["layer"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0
+                && ClosureUtils.isDef(options["layer"]) && options["layer"].length>0)
          {
             var imgLayer = new WMTSImageLayer();
-            if (goog.isDef(options["format"]))
+            if (ClosureUtils.isDef(options["format"]))
             {imgLayer.format = options["format"];}
-            if (goog.isDef(options["style"]))
+            if (ClosureUtils.isDef(options["style"]))
             {imgLayer.style = options["style"];}
-            if (goog.isDef(options["version"]))
+            if (ClosureUtils.isDef(options["version"]))
             {imgLayer.version = options["version"];}
             imgLayer.Setup(options["url"],options["layer"],options["SRS"],options["format"],options["style"],options["version"],options["transparency"]);
             index = this.imagelayerlist.length;
@@ -287,15 +288,15 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // WMS service
       else if (options["service"] == "wms")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0
-            && goog.isDef(options["layer"]) && options["layer"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0
+            && ClosureUtils.isDef(options["layer"]) && options["layer"].length>0)
          {
             var imgLayer = new WMSImageLayer();
-            if (goog.isDef(options["format"]))
+            if (ClosureUtils.isDef(options["format"]))
             {imgLayer.format = options["format"];} 
-            if (goog.isDef(options["style"]))
+            if (ClosureUtils.isDef(options["style"]))
             {imgLayer.style = options["style"];}
-            if (goog.isDef(options["version"]))
+            if (ClosureUtils.isDef(options["version"]))
             {imgLayer.version = options["version"];}
             imgLayer.Setup(options["url"],options["layer"],options["SRS"],options["format"],options["style"],options["version"],options["transparency"]);
             index = this.imagelayerlist.length;
@@ -306,15 +307,15 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // OpenWebGlobe tile layout
       else if (options["service"] == "owg")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0)
          {
             var layer = options["layer"];
             var imgLayer = new owgImageLayer();
-            if (goog.isDef(options["minlod"]))
+            if (ClosureUtils.isDef(options["minlod"]))
             {
                imgLayer.userminlod = options["minlod"];
             }
-            if (goog.isDef(options["maxlod"]))
+            if (ClosureUtils.isDef(options["maxlod"]))
             {
                imgLayer.usermaxlod = options["maxlod"];
             }
@@ -327,14 +328,14 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       // Google tile layout
       else if (options["service"] == "goo")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0)
          {
             var imgLayer = new GoogleImageLayer();
-            if (goog.isDef(options["minlod"]))
+            if (ClosureUtils.isDef(options["minlod"]))
             {
                imgLayer.userminlod = options["minlod"];
             }
-            if (goog.isDef(options["maxlod"]))
+            if (ClosureUtils.isDef(options["maxlod"]))
             {
                imgLayer.usermaxlod = options["maxlod"];
             }
@@ -346,14 +347,14 @@ GlobeRenderer.prototype.AddImageLayer = function(options)
       }
       else if (options["service"] == "oym")
       {
-         if (goog.isDef(options["url"]) && options["url"].length>0)
+         if (ClosureUtils.isDef(options["url"]) && options["url"].length>0)
          {
             var imgLayer = new OYMImageLayer();
-            if (goog.isDef(options["minlod"]))
+            if (ClosureUtils.isDef(options["minlod"]))
             {
                imgLayer.userminlod = options["minlod"];
             }
-            if (goog.isDef(options["maxlod"]))
+            if (ClosureUtils.isDef(options["maxlod"]))
             {
                imgLayer.usermaxlod = options["maxlod"];
             }

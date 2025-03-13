@@ -1,5 +1,5 @@
 CLOSURE_LIBRARY=../external/closure-library
-COMPILATION_LEVEL=ADVANCED_OPTIMIZATIONS
+COMPILATION_LEVEL=WHITESPACE_ONLY
 COMPILER_JAR=../external/closure/compiler.jar
 SOURCES=$(shell find ../source/core ../source/core/layer ../source/core/nodes ../source/core/og ../source/core/aoe -maxdepth 1 -name \*.js)
 TARGETS=\
@@ -10,10 +10,11 @@ TARGETS=\
 .PHONY: all
 all: $(TARGETS)
 
+# FIXME Consider transitioning to npx closure-make-deps
 ../compiled/deps.js: $(SOURCES) Makefile $(COMPILER_JAR) $(CLOSURE_LIBRARY)
 	$(CLOSURE_LIBRARY)/closure/bin/build/depswriter.py \
 		--root_with_prefix="$(CLOSURE_LIBRARY)/closure/ ../" \
-		--root_with_prefix="../source/ ../../../../source/" \
+		--root_with_prefix="../source/core/ ../../../../source/core/" \
 		--output_file=$@
 
 ../compiled/owg-optimized.js ../compiled/owg-optimized.map: $(SOURCES) Makefile $(CLOSURE_LIBRARY) $(COMPILER_JAR)
@@ -27,7 +28,7 @@ all: $(TARGETS)
 		--output_file=$@ \
 		--output_mode=compiled \
 		--root=../external/closure-library/ \
-		--root=../source/
+		--root=../source/core/
 
 .PHONY: clean
 clean:
@@ -38,8 +39,11 @@ lint:
 	gjslint --strict $(SOURCES)
 
 $(COMPILER_JAR):
-	mkdir -p $(dir $(COMPILER_JAR))
-	curl http://closure-compiler.googlecode.com/files/compiler-latest.tar.gz | tar -C $(dir $(COMPILER_JAR)) -xzf - compiler.jar
+	mkdir -p $(dirname $COMPILER_JAR)
+	curl -o $(dirname $COMPILER_JAR)/compiler.jar 'https://repo1.maven.org/maven2/com/google/javascript/closure-compiler/v20240317/closure-compiler-v20240317.jar'
+	# cd ../
+	# npm install
+	# cd scripts/
 
 $(CLOSURE_LIBRARY):
-	svn checkout http://closure-library.googlecode.com/svn/trunk/ $@
+	git clone git@github.com:google/closure-library.git ../external/closure-library

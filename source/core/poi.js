@@ -11,7 +11,7 @@
 
 goog.provide('owg.Poi');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.CanvasTexture');
 goog.require('owg.Font');
 goog.require('owg.GeoCoord');

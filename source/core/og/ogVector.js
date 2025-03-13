@@ -14,6 +14,7 @@ goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
 goog.require('owg.Surface');
 goog.require('owg.poly2tri');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 /**
@@ -77,7 +78,7 @@ ogVector.prototype.ParseOptions = function(options)
       return;
    }
 
-   if (goog.isDef(options["url"]))
+   if (ClosureUtils.isDef(options["url"]))
    {
       if (options["type"] == "GeoJSON")
       {
@@ -355,64 +356,64 @@ ogVector.prototype.CreateFromJSONObject = function(jsonobject)
    if(jsonobject['type']=="FeatureCollection")
    {
       ogLog("[GeoJSON Parser] type = FeatureCollection");
-      if (goog.isDef(jsonobject['features']))
+      if (ClosureUtils.isDef(jsonobject['features']))
       {
          var feature = jsonobject['features'];
          var numFeatures = feature.length;
          for (var i=0;i<numFeatures;i++)
          {
-            if (goog.isDef(feature[i]['type']) && feature[i]['type'] == "Feature")
+            if (ClosureUtils.isDef(feature[i]['type']) && feature[i]['type'] == "Feature")
             {
-               if (goog.isDef(feature[i]['properties']) && goog.isDef(feature[i]['geometry']))
+               if (ClosureUtils.isDef(feature[i]['properties']) && ClosureUtils.isDef(feature[i]['geometry']))
                {
                   var properties = feature[i]['properties'];
                   var geometry = feature[i]['geometry'];
 
                   // 1) read optional properties
-                  if (goog.isDef(properties['id']))
+                  if (ClosureUtils.isDef(properties['id']))
                   {
                      this.userid = properties['id']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['color']))
+                  if (ClosureUtils.isDef(properties['color']))
                   {
 
                      this.color = properties['color']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['highlightcolor']))
+                  if (ClosureUtils.isDef(properties['highlightcolor']))
                   {
                      this.highlightcolor = properties['highlightcolor']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['linewidth'])) // LineString/MultiLineString only..
+                  if (ClosureUtils.isDef(properties['linewidth'])) // LineString/MultiLineString only..
                   {
                      this.linewidth = properties['linewidth']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['pointsize'])) // Point, Multipoint only...
+                  if (ClosureUtils.isDef(properties['pointsize'])) // Point, Multipoint only...
                   {
                      this.pointsize = properties['pointsize']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['minelv'])) // Point, Multipoint only...
+                  if (ClosureUtils.isDef(properties['minelv'])) // Point, Multipoint only...
                   {
                      this.minelv = properties['minelv']; // todo: type check
                   }
 
-                  if (goog.isDef(properties['maxelv'])) // Point, Multipoint only...
+                  if (ClosureUtils.isDef(properties['maxelv'])) // Point, Multipoint only...
                   {
                      this.maxelv = properties['maxelv']; // todo: type check
                   }
 
                   // 2) Parse Geometry
 
-                  if (goog.isDef(geometry['type']))
+                  if (ClosureUtils.isDef(geometry['type']))
                   {
                      var geometrytype = geometry['type'];
                      if (geometrytype == "LineString")
                      {
-                        if (goog.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
+                        if (ClosureUtils.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
                         {
                            /** @type {Array.< Array.<number> >} */
                            var lscoords = geometry['coordinates'];
@@ -421,7 +422,7 @@ ogVector.prototype.CreateFromJSONObject = function(jsonobject)
                      }
                      else if (geometrytype == "MultiLineString")
                      {
-                        if (goog.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
+                        if (ClosureUtils.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
                         {
                            /** @type {Array.< Array.<number> >} */
                            var mlscoords = geometry['coordinates'];
@@ -437,7 +438,7 @@ ogVector.prototype.CreateFromJSONObject = function(jsonobject)
                      }
                      else if (geometrytype == "Polygon")
                      {
-                        if (goog.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
+                        if (ClosureUtils.isDef(geometry['coordinates'] && goog.isArray(geometry['coordinates'])))
                         {
                            /** @type {Array.< Array.<number> >} */
                            var polycoords = geometry['coordinates'];

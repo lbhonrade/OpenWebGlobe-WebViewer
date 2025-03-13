@@ -37,7 +37,7 @@ ogWorld.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.debug.Logger.getLogger('owg.ogTexture').warning("** ERROR: no options for texture creation!");
+      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no options for texture creation!");
       return;  // no options!!
    }
 

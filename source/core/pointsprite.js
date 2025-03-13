@@ -11,7 +11,7 @@
 
 goog.provide('owg.PointSprite');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.GeoCoord');
 goog.require('owg.Texture');
 goog.require('owg.mat4');

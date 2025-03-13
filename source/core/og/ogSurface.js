@@ -160,19 +160,19 @@ ogSurface.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.debug.Logger.getLogger('owg.ogTexture').warning("** ERROR: no options for surface creation!");
+      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no options for surface creation!");
       return;  // no options!!
    }
    
    if (this.parent == null)
    {
-      goog.debug.Logger.getLogger('owg.ogTexture').warning("** ERROR: no parent!");
+      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no parent!");
       return;
    }
    
    if (this.parent.type != OG_OBJECT_MESH)
    {
-      goog.debug.Logger.getLogger('owg.ogTexture').warning("** ERROR: parent is not scene!");
+      goog.log.getLogger('owg.ogTexture').warning("** ERROR: parent is not scene!");
       return;
    }
    if(options["jsonobject"])

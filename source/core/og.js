@@ -40,10 +40,9 @@ goog.require('owg.ogBillboardLayer');
 goog.require('owg.FlyToAnimation');
 goog.require('owg.ogPointSprite');
 goog.require('owg.ogEarthPolyline');
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.ogAoeImageLayer');
-goog.require('goog.debug.Logger');
-goog.require('goog.debug.FancyWindow');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 //* @ignore
@@ -264,7 +263,7 @@ function ogGetObjectPosition(object_id)
        case OG_OBJECT_GEOMETRY: // geometry
          pos = {};
          var geometry = /** @type {ogGeometry} */ obj;
-         if (goog.isDef(geometry.options["jsonobject"]) && goog.isDef(geometry.options["jsonobject"]["Center"]))
+         if (ClosureUtils.isDef(geometry.options["jsonobject"]) && ClosureUtils.isDef(geometry.options["jsonobject"]["Center"]))
          {
             pos["longitude"] = geometry.options["jsonobject"]["Center"][0];
             pos["latitude"] = geometry.options["jsonobject"]["Center"][1];
@@ -980,7 +979,7 @@ goog.exportSymbol('ogSetArtworkDirectory', ogSetArtworkDirectory);
 function ogCreateScene(context_id, scenetype, options)
 {
    // initialize optional options
-   if (!goog.isDef(options))
+   if (!ClosureUtils.isDef(options))
    {
       options = {};
    }
@@ -1020,12 +1019,12 @@ function ogCreateScene(context_id, scenetype, options)
       }
       else
       {
-         goog.debug.Logger.getLogger('owg.og').warning("** WARNING: wrong scene type");
+         goog.log.getLogger('owg.og').warning("** WARNING: wrong scene type");
          return -1; // wrong scene type
       }
    }
    
-   goog.debug.Logger.getLogger('owg.og').warning("** WARNING: context is not valid");
+   goog.log.getLogger('owg.og').warning("** WARNING: context is not valid");
    return -1;
 
 }
@@ -1475,7 +1474,7 @@ goog.exportSymbol('ogLookAt', ogLookAt);
  */
 function ogSetNavigationMode(scene_id, navigationmode, opt_options)
 {
-   if (!goog.isDef(opt_options))
+   if (!ClosureUtils.isDef(opt_options))
    {
       opt_options = {};
    }
@@ -2359,7 +2358,7 @@ goog.exportSymbol('ogRemoveGeometryLayer', ogRemoveGeometryLayer);
 function ogCreateGeometry(layer_id ,jsonobject)
 {
    var options = {};
-   if (goog.isDef(jsonobject["type"]))
+   if (ClosureUtils.isDef(jsonobject["type"]))
    {
       options = jsonobject;
    }
@@ -3158,7 +3157,7 @@ goog.exportSymbol('ogDebug', ogDebug);
  */
 function ogWarning(text)
 {
-   goog.debug.Logger.getLogger('warning').warning(text);
+   goog.log.getLogger('warning').warning(text);
 }
 goog.exportSymbol('ogWarning', ogWarning);
 //------------------------------------------------------------------------------
@@ -3168,7 +3167,7 @@ goog.exportSymbol('ogWarning', ogWarning);
  */
 function ogError(text)
 {
-   goog.debug.Logger.getLogger('error').severe(text);
+   goog.log.getLogger('error').severe(text);
 }
 goog.exportSymbol('ogError', ogError);
 //------------------------------------------------------------------------------
@@ -3178,7 +3177,7 @@ goog.exportSymbol('ogError', ogError);
  */
 function ogLog(text)
 {
-   goog.debug.Logger.getLogger('message').info(text);
+   goog.log.getLogger('message').info(text);
 }
 goog.exportSymbol('ogLog', ogLog);
 //------------------------------------------------------------------------------

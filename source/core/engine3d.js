@@ -10,7 +10,7 @@
 
 goog.provide('owg.engine3d');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('goog.events');
 goog.require('goog.events.EventType');
 goog.require('goog.events.MouseWheelHandler');
@@ -26,6 +26,7 @@ goog.require('owg.PoiManager');
 goog.require('owg.TextureManager');
 goog.require('owg.GeoCoord');
 goog.require('owg.PointSprite');
+goog.require('owg.ClosureUtils');
 
 /**
  *
@@ -333,7 +334,7 @@ var setupWebGL = function (canvas)
    }
 
    var context = create3DContext(canvas);
-   if (goog.isNull(context))
+   if (ClosureUtils.isNull(context))
    {
       showLink(OTHER_PROBLEM);
       return null;
@@ -922,11 +923,11 @@ engine3d.prototype.CreateScene = function (options)
    }
    else if (this.worldtype == 2)
    {
-      goog.debug.Logger.getLogger('owg.engine3d').warning("** WARNING: not implemented");
+      goog.log.getLogger('owg.engine3d').warning("** WARNING: not implemented");
    }
    else if (this.worldtype == 3)
    {
-      goog.debug.Logger.getLogger('owg.engine3d').warning("** WARNING: not implemented");
+      goog.log.getLogger('owg.engine3d').warning("** WARNING: not implemented");
    }
 
 }

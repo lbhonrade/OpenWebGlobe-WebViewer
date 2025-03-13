@@ -31,6 +31,7 @@ goog.require('owg.ScenegraphNode');
 goog.require('owg.GeoCoord');
 goog.require('owg.mat4');
 goog.require('owg.vec3');
+goog.require('owg.ClosureUtils');
 
 /**
  * Navigation Node. Setup view matrix using a navigation
@@ -188,20 +189,20 @@ function ConstrainedNavigationNode(options)
    /** @type {Array.<number>} */
    this.ElevationSteps = [];
 
-   if (goog.isDef(options["ElevationSteps"]))
+   if (ClosureUtils.isDef(options["ElevationSteps"]))
    {
       this.ElevationSteps = options["ElevationSteps"];
    }
 
-   if (goog.isDef(options["Near"]))
+   if (ClosureUtils.isDef(options["Near"]))
    {
       this.near = options["Near"];
    }
-   if (goog.isDef(options["Far"]))
+   if (ClosureUtils.isDef(options["Far"]))
    {
       this.far = options["Far"];
    }
-   if (goog.isDef(options["Fov"]))
+   if (ClosureUtils.isDef(options["Fov"]))
    {
       this.fov = options["Fov"];
    }
@@ -215,7 +216,7 @@ function ConstrainedNavigationNode(options)
    /** @type {Array.< Array.<number> >} */
    this.BoundingRect = [];
 
-   if (goog.isDef(options["BoundingRect"]))
+   if (ClosureUtils.isDef(options["BoundingRect"]))
    {
       this.BoundingRect = options["BoundingRect"];
    }
@@ -223,7 +224,7 @@ function ConstrainedNavigationNode(options)
    /** @type {Array.<number>} */
    this.BoundingPolygon = [];
 
-   if (goog.isDef(options["BoundingPolygon"]))
+   if (ClosureUtils.isDef(options["BoundingPolygon"]))
    {
       this.BoundingRect = []; // just in case... there can't be a bounding box AND a bounding polygon...
       this.BoundingPolygon = options["BoundingPolygon"];

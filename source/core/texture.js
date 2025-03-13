@@ -10,10 +10,11 @@
 
 goog.provide('owg.Texture');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('owg.MathUtils');
 goog.require('owg.Surface');
 goog.require('owg.mat4');
+goog.require('owg.ClosureUtils');
 
 
 /**
@@ -163,7 +164,7 @@ Texture.prototype._DestroyFBO = function()
 Texture.prototype.loadTexture = function(url, opt_callbackready, opt_callbackfailed, opt_flip)
 {
    // preparations
-   if (goog.isDef(opt_flip))
+   if (ClosureUtils.isDef(opt_flip))
    {
       this.flip = opt_flip;
    }
@@ -188,7 +189,7 @@ Texture.prototype.loadTexture = function(url, opt_callbackready, opt_callbackfai
    }
    this.texture.image.onerror = function()
    {
-      goog.debug.Logger.getLogger('owg.Texture').warning("***FAILED DOWNLOADING: " + url);
+      goog.log.getLogger('owg.Texture').warning("***FAILED DOWNLOADING: " + url);
       this.failed = true;
       if (cbf)
       {
@@ -348,7 +349,7 @@ Texture.prototype.Blit = function(x, y, opt_z, opt_angle, opt_scalex, opt_scaley
       this.engine.SetModelMatrix(model);
       
 
-      if (goog.isNull(this.blitMesh))
+      if (ClosureUtils.isNull(this.blitMesh))
       {
          this.blitMesh = new Surface(this.engine);
 

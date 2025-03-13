@@ -33,6 +33,7 @@ goog.require('owg.NavigationNode');
 goog.require('owg.ScenegraphNode');
 goog.require('owg.vec3');
 goog.require('owg.Mercator');
+goog.require('owg.ClosureUtils');
 
 /**
  * Dynamic Navigation Node, based on GlobeNavigation (in development)
@@ -148,17 +149,17 @@ function DynamicNavigationNode(options)
    this.far = -1.0;
    this.fov = -1;
 
-   if(goog.isDef(options))
+   if(ClosureUtils.isDef(options))
    {
-      if (goog.isDef(options["Near"]))
+      if (ClosureUtils.isDef(options["Near"]))
       {
          this.near = options["Near"];
       }
-      if (goog.isDef(options["Far"]))
+      if (ClosureUtils.isDef(options["Far"]))
       {
          this.far = options["Far"];
       }
-      if (goog.isDef(options["Fov"]))
+      if (ClosureUtils.isDef(options["Fov"]))
       {
          this.fov = options["Fov"];
       }

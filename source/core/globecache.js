@@ -11,7 +11,7 @@
 
 goog.provide('owg.GlobeCache');
 
-goog.require('owg.Cache');
+goog.require('owg.OWGCache');
 goog.require('owg.TerrainBlock');
 
 //------------------------------------------------------------------------------
@@ -42,8 +42,8 @@ function GlobeCache(engine, imagelayerlist, elevationlayerlist, geometrylayerlis
    /** @type {MercatorQuadtree} */
    this.quadtree = quadtree;
 
-   /** @type {Cache} */
-   this.cache = new Cache(cachesize, false);
+   /** @type {OWGCache} */
+   this.cache = new OWGCache(cachesize, false);
 
    /** @type {Object} */
    this.stats = {};

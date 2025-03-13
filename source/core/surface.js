@@ -11,13 +11,14 @@
 
 goog.provide('owg.Surface');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 goog.require('goog.json');
 goog.require('owg.AABB');
 goog.require('owg.TriangleIntersector');
 goog.require('owg.mat4');
 goog.require('owg.vec3');
 goog.require('owg.vec4');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 /**
@@ -939,7 +940,7 @@ Surface.prototype.cbfTextureLoadCallback_ready = function ()
  */
 Surface.prototype.cbfTextureLoadCallback_failed = function ()
 {
-   goog.debug.Logger.getLogger('owg.Mesh').warning("Downloading Error: Texture not found...");
+   goog.log.getLogger('owg.Mesh').warning("Downloading Error: Texture not found...");
    if (this.cbf)
    {
       this.cbf(this);
@@ -1125,7 +1126,7 @@ Surface.prototype.SetCurrentTriangle = function (triangleNumber)
          break;
 
       default:
-         goog.debug.Logger.getLogger('owg.Surface').warning("This indexsemantic is not supported for function: Surface.ReadTriangleFromBuffer() ");
+         goog.log.getLogger('owg.Surface').warning("This indexsemantic is not supported for function: Surface.ReadTriangleFromBuffer() ");
          break;
 
    }
@@ -1255,11 +1256,11 @@ Surface.prototype.UpdateAABB = function ()
       maxz += this.offset[2];
    }
 
-   if (goog.isNull(this.bbmin)) // no bounding box yet ?
+   if (ClosureUtils.isNull(this.bbmin)) // no bounding box yet ?
    {
       this.bbmin = new Array(3);
    }
-   if (goog.isNull(this.bbmax))
+   if (ClosureUtils.isNull(this.bbmax))
    {
       this.bbmax = new Array(3);
    }
@@ -1595,7 +1596,7 @@ Surface.prototype.SolidCube = function(center,dimension,opt_color)
    object["IndexSemantic"] = "TRIANGLES";
    object["Indices"] = [3,1,0,5,3,2,7,5,4,1,7,6,5,7,1,2,0,6,2,3,0,4,5,2,6,7,4,0,1,6,3,5,1,4,2,6];
 
-   if (goog.isDef(opt_color))
+   if (ClosureUtils.isDef(opt_color))
    {
       if (opt_color.length == 4)
       {
@@ -1629,7 +1630,7 @@ Surface.prototype.SolidBlitMesh = function(opt_color)
    object["IndexSemantic"] = "TRIANGLES";
    object["Indices"] = [0,1,3,1,2,3];
 
-   if (goog.isDef(opt_color))
+   if (ClosureUtils.isDef(opt_color))
    {
       if (opt_color.length == 4)
       {
@@ -1706,7 +1707,7 @@ Surface.prototype.SolidGeosphere = function(color, subdiv)
    object["IndexSemantic"] = "TRIANGLES";
    object["Indices"] = [3,1,0,5,3,2,7,5,4,1,7,6,5,7,1,2,0,6,2,3,0,4,5,2,6,7,4,0,1,6,3,5,1,4,2,6];
 
-   if (goog.isDef(color))
+   if (ClosureUtils.isDef(color))
    {
       if (color.length == 4)
       {

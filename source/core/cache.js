@@ -9,9 +9,9 @@
  *******************************************************************************/
 
 
-goog.provide('owg.Cache');
+goog.provide('owg.OWGCache');
 
-goog.require('goog.debug.Logger');
+goog.require('goog.log');
 
 /*
 This code is based on jscache, available at https://github.com/monsur/jscache/
@@ -50,7 +50,7 @@ var CachePriority =
  * @param {boolean} debug Whether to log events
  * @constructor
  */
-function Cache(maxSize, debug) 
+function OWGCache(maxSize, debug) 
 {
     /** @type {number} */
     this.maxSize_ = maxSize || -1;
@@ -79,7 +79,7 @@ function Cache(maxSize, debug)
  * @param {string} key The key to retrieve.
  * @return {Object} The item, or null if it doesn't exist.
  */
-Cache.prototype.getItem = function(key) 
+OWGCache.prototype.getItem = function(key) 
 {
   // retrieve the item from the cache
   var item = this.items_[key];
@@ -146,7 +146,7 @@ var CacheSetItemOptions;
  *                from cache.  The key and value of the removed item
  *                are passed as parameters to the callback function.
  */
-Cache.prototype.setItem = function(key, value, opt_options) 
+OWGCache.prototype.setItem = function(key, value, opt_options) 
 {
 
   /** @constructor */
@@ -197,7 +197,7 @@ Cache.prototype.setItem = function(key, value, opt_options)
 /**
  * Removes all items from the cache.
  */
-Cache.prototype.clear = function() {
+OWGCache.prototype.clear = function() {
   // loop through each item in the cache and remove it
   for (var key in this.items_) {
     this.removeItem_(key);
@@ -209,7 +209,7 @@ Cache.prototype.clear = function() {
 /**
  * @return {Object} The hits and misses on the cache.
  */
-Cache.prototype.getStats = function() 
+OWGCache.prototype.getStats = function() 
 {
   return this.stats_;
 };
@@ -219,7 +219,7 @@ Cache.prototype.getStats = function()
 /**
  * @return {string} Returns an HTML string representation of the cache.
  */
-Cache.prototype.toHtmlString = function() 
+OWGCache.prototype.toHtmlString = function() 
 {
   var returnStr = this.count_ + " item(s) in cache<br /><ul>";
   for (var key in this.items_) 
@@ -236,7 +236,7 @@ Cache.prototype.toHtmlString = function()
 /**
  * Removes expired items from the cache.
  */
-Cache.prototype.purge_ = function() 
+OWGCache.prototype.purge_ = function() 
 {
 
   var tmparray = new Array();
@@ -289,7 +289,7 @@ Cache.prototype.purge_ = function()
  * @param {Object} item The cache item to add.
  * @private
  */
-Cache.prototype.addItem_ = function(item) 
+OWGCache.prototype.addItem_ = function(item) 
 {
   this.items_[item.key] = item;
   this.count_++;
@@ -302,7 +302,7 @@ Cache.prototype.addItem_ = function(item)
  * @param {string} key The key of the item to remove
  * @private
  */
-Cache.prototype.removeItem_ = function(key) 
+OWGCache.prototype.removeItem_ = function(key) 
 {
   var item = this.items_[key];
   delete this.items_[key];
@@ -333,7 +333,7 @@ Cache.prototype.removeItem_ = function(key)
  * @return {boolean} True if the item is expired
  * @private
  */
-Cache.prototype.isExpired_ = function(item) 
+OWGCache.prototype.isExpired_ = function(item) 
 {
   var now = new Date().getTime();
   var expired = false;
@@ -357,11 +357,11 @@ Cache.prototype.isExpired_ = function(item)
  * @param {string} msg The message to log.
  * @private
  */
-Cache.prototype.log_ = function(msg) 
+OWGCache.prototype.log_ = function(msg) 
 {
   if (this.debug_) 
   {
-    goog.debug.Logger.getLogger('owg.Cache').info(msg);
+    goog.log.getLogger('owg.OWGCache').info(msg);
   }
 };
 

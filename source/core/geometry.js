@@ -10,6 +10,7 @@
 
 goog.provide('owg.Geometry');
 goog.require('owg.Surface');
+goog.require('owg.ClosureUtils');
 
 
 //------------------------------------------------------------------------------
@@ -98,7 +99,7 @@ Geometry.prototype.CreateFromJSONObject = function(jsonobject)
 {
    var failed = true;
 
-   if (goog.isDef(jsonobject["Version"] && jsonobject["Version"] == "1.0"))
+   if (ClosureUtils.isDef(jsonobject["Version"] && jsonobject["Version"] == "1.0"))
    {
       var bounds = jsonobject["Bounds"];
       var texture = jsonobject["Texture"];

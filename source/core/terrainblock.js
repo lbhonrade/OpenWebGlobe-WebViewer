@@ -17,6 +17,7 @@ goog.require('owg.Surface');
 goog.require('owg.Texture');
 goog.require('owg.mat4');
 goog.require('owg.vec3');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------------
 /**
@@ -93,7 +94,7 @@ TerrainBlock.prototype.MergeImages = function()
       // All layers are downloaded -> now create a "merged image" if there are several layers!
       var cntdata = 0;
       var thelayer = 0;
-      if (!goog.isNull(this.images))
+      if (!ClosureUtils.isNull(this.images))
       {
           for (var i=0;i<this.images.length;i++)
           {
@@ -111,7 +112,7 @@ TerrainBlock.prototype.MergeImages = function()
          // This case shoudln't ever happen, but maybe a tile is corrupted on the server
          // or a dataset is being moved, or whatever! 
          this.texture = this.engine.nodata; // use empty texture
-         if (goog.isNull(this.mesh))
+         if (ClosureUtils.isNull(this.mesh))
          {  
             this._CreateElevationMesh(); // create empty elevation
          }
@@ -124,7 +125,7 @@ TerrainBlock.prototype.MergeImages = function()
       {
          // Case 2: Only one image layer is available for this Terrainblock. just take that one. 
          this.texture = this.images[thelayer];
-         if (goog.isNull(this.mesh))
+         if (ClosureUtils.isNull(this.mesh))
          {  
             this._CreateElevationMesh(); // create empty elevation
          }
@@ -139,7 +140,7 @@ TerrainBlock.prototype.MergeImages = function()
          // It is not possible to merge images, this must be done during render loop
          // so the "PostCreation" flag is set for the render loop. 
          this.bPostCreation = true;
-         if (goog.isNull(this.mesh))
+         if (ClosureUtils.isNull(this.mesh))
          {  
             this._CreateElevationMesh();  // create empty elevation
          }

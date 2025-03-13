@@ -13,6 +13,7 @@ goog.provide('owg.ogGeometry');
 
 goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
+goog.require('owg.ClosureUtils');
 
 
 //------------------------------------------------------------------------------
@@ -422,15 +423,15 @@ ogGeometry.prototype.CreateEarthPolyLine = function(options)
  */
 ogGeometry.prototype.CreateSolidCube = function(options)
 {
-   if (!goog.isDef(options["srs"]))
+   if (!ClosureUtils.isDef(options["srs"]))
    {
       options["srs"] = "EPSG:4326"; // default value
    }
-   if (!goog.isDef(options["position"]))
+   if (!ClosureUtils.isDef(options["position"]))
    {
       options["position"] = [0,0,0];
    }
-   if (!goog.isDef(options["color"]))
+   if (!ClosureUtils.isDef(options["color"]))
    {
       options["color"] = [1,1,1];
    }
@@ -481,12 +482,12 @@ ogGeometry.prototype.CreateSolidCube = function(options)
  */
 ogGeometry.prototype.CreateSolidGeosphere = function(options)
 {
-   if (!goog.isDef(options["color"]))
+   if (!ClosureUtils.isDef(options["color"]))
    {
       options["color"] = [1,1,1];
    }
 
-   if (!goog.isDef(options["subdivisions"]))
+   if (!ClosureUtils.isDef(options["subdivisions"]))
    {
       options["subdivisions"] = 1;
    }
