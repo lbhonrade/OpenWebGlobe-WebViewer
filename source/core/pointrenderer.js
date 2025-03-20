@@ -10,7 +10,7 @@
 
 goog.provide('owg.PointRenderer');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.GeoCoord');
 goog.require('owg.Texture');
 goog.require('owg.mat4');
@@ -59,7 +59,7 @@ PointRenderer.prototype.SetPoints = function(pointsemantic, points)
     }
     else
     {
-        goog.log.getLogger('owg.PointRenderer').error("Point Semantic not supported!");
+        Logger.get('owg.PointRenderer').error("Point Semantic not supported!");
     }
 
 }

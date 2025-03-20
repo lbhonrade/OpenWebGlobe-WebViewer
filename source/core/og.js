@@ -40,7 +40,7 @@ goog.require('owg.ogBillboardLayer');
 goog.require('owg.FlyToAnimation');
 goog.require('owg.ogPointSprite');
 goog.require('owg.ogEarthPolyline');
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.ogAoeImageLayer');
 goog.require('owg.ClosureUtils');
 
@@ -1019,12 +1019,12 @@ function ogCreateScene(context_id, scenetype, options)
       }
       else
       {
-         goog.log.getLogger('owg.og').warning("** WARNING: wrong scene type");
+         Logger.get('owg.og').warn("** WARNING: wrong scene type");
          return -1; // wrong scene type
       }
    }
    
-   goog.log.getLogger('owg.og').warning("** WARNING: context is not valid");
+   Logger.get('owg.og').warn("** WARNING: context is not valid");
    return -1;
 
 }
@@ -3157,7 +3157,7 @@ goog.exportSymbol('ogDebug', ogDebug);
  */
 function ogWarning(text)
 {
-   goog.log.getLogger('warning').warning(text);
+   Logger.get('warning').warn(text);
 }
 goog.exportSymbol('ogWarning', ogWarning);
 //------------------------------------------------------------------------------
@@ -3167,7 +3167,7 @@ goog.exportSymbol('ogWarning', ogWarning);
  */
 function ogError(text)
 {
-   goog.log.getLogger('error').severe(text);
+   Logger.get('error').error(text);
 }
 goog.exportSymbol('ogError', ogError);
 //------------------------------------------------------------------------------
@@ -3177,7 +3177,7 @@ goog.exportSymbol('ogError', ogError);
  */
 function ogLog(text)
 {
-   goog.log.getLogger('message').info(text);
+   Logger.get('message').info(text);
 }
 goog.exportSymbol('ogLog', ogLog);
 //------------------------------------------------------------------------------

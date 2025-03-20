@@ -11,7 +11,7 @@
 
 goog.provide('owg.GlobeRenderer');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.Texture');
 goog.require('owg.GlobeCache');
 goog.require('owg.MercatorQuadtree');

@@ -321,7 +321,6 @@ function RenderObjectNode(options)
    //---------------------------------------------------------------------------
    this.OnUnregisterEvents = function ()
    {
-      goog.events.unlistenByKey(this.evtKeyDown);
    }
    //---------------------------------------------------------------------------
    this.OnRegisterEvents = function (context)

@@ -29,3 +29,9 @@ ClosureUtils.isDef = function(val) {
 ClosureUtils.isNull = function(val) {
     return val === null;
   };
+
+ClosureUtils.MouseButton = {
+    LEFT: 0,
+    MIDDLE: 1,
+    RIGHT: 2,
+};

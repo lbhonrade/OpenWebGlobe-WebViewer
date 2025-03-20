@@ -178,7 +178,7 @@ ogVector.prototype._cbfjsondownload = function()
       else
       {
          var data=this.http.responseText;
-         var jsonobj = goog.json.parse(data);
+         var jsonobj = JSON.parse(data);
          this.CreateFromJSONObject(jsonobj);
       }
    }

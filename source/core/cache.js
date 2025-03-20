@@ -11,7 +11,7 @@
 
 goog.provide('owg.OWGCache');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 
 /*
 This code is based on jscache, available at https://github.com/monsur/jscache/
@@ -361,7 +361,7 @@ OWGCache.prototype.log_ = function(msg)
 {
   if (this.debug_) 
   {
-    goog.log.getLogger('owg.OWGCache').info(msg);
+    Logger.get('owg.OWGCache').info(msg);
   }
 };
 

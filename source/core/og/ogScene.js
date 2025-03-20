@@ -56,7 +56,7 @@ ogScene.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.log.getLogger('owg.ogScene').warning("** ERROR: no options for scene creation!");
+      Logger.get('owg.ogScene').warn("** ERROR: no options for scene creation!");
       return;  // no options!!
    }
    

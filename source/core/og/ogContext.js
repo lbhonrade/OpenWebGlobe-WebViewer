@@ -12,7 +12,7 @@
 
 goog.provide('owg.ogContext');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
 goog.require('owg.engine3d');

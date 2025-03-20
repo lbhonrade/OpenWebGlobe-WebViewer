@@ -10,10 +10,7 @@
 
 goog.provide('owg.engine3d');
 
-goog.require('goog.log');
-goog.require('goog.events');
-goog.require('goog.events.EventType');
-goog.require('goog.events.MouseWheelHandler');
+goog.require('owg.Logger');
 goog.require('owg.Font');
 goog.require('owg.Surface');
 goog.require('owg.SceneGraph');
@@ -361,6 +358,7 @@ var create3DContext = function (canvas)
       }
       catch (e)
       {
+         console.error(e);
       }
       if (context)
       {
@@ -412,6 +410,7 @@ engine3d.prototype.InitEngine = function (canvas, bFullscreen)
       }
       catch (e)
       {
+         console.error(e);
       }
    }
    if (!this.gl)
@@ -430,8 +429,9 @@ engine3d.prototype.InitEngine = function (canvas, bFullscreen)
       return false;
    };
 
-   goog.events.listen(window, goog.events.EventType.RESIZE, _fncResize, false, this);
-   goog.events.listen(window, goog.events.EventType.UNLOAD, this.OnDestroy, false, this);
+   let self = this;
+   window.addEventListener('resize', function(e) {return _fncResize(e);});
+   window.addEventListener('unload', function(e) {return self.OnDestroy(e);});
 }
 /**
  * @description Initialize Engine
@@ -508,18 +508,18 @@ engine3d.prototype.OnDestroy = function ()
 
    if (this.cbfMouseDown)
    {
-      goog.events.unlistenByKey(this.cbfMouseDown);
-      this.cbfMouseDown = null;
+      this.context.removeEventListener('mousedown', this.cbfMouseDown);
+      this.cbfMouseDown = undefined;
    }
    if (this.cbfMouseUp)
    {
-      goog.events.unlistenByKey(this.cbfMouseUp);
-      this.cbfMouseUp = null;
+      this.context.removeEventListener('mouseup', this.cbfMouseUp);
+      this.cbfMouseUp = undefined;
    }
    if (this.cbfMouseWheel)
    {
-      goog.events.unlistenByKey(this.cbfMouseWheel);
-      this.cbfMouseWheel = null;
+      this.context.removeEventListener('wheel', this.cbfMouseWheel);
+      this.cbfMouseWheel = undefined;
    }
 
    if (this.cbfTimer)
@@ -533,12 +533,12 @@ engine3d.prototype.OnDestroy = function ()
 
    if (_gcbfKeyDown)
    {
-      goog.events.unlistenByKey(_gcbfKeyDown);
+      window.removeEventListener(_gcbfKeyDown);
       _gcbfKeyUp = null;
    }
    if (_gcbfKeyUp)
    {
-      goog.events.unlistenByKey(_gcbfKeyUp);
+      window.removeEventListener(_gcbfKeyUp);
       _gcbfKeyUp = null;
    }
 
@@ -564,7 +564,7 @@ engine3d.prototype.OnDestroy = function ()
    this.scene = null;
    this.poimanager = null;
    this.texturemanager = null;
-   goog.events.unlisten(window, goog.events.EventType.RESIZE, null, false, this);
+   window.removeEventListener('resize', null);
 
    _g_nInstanceCnt = 0;
    _g_vInstances = [];
@@ -923,11 +923,11 @@ engine3d.prototype.CreateScene = function (options)
    }
    else if (this.worldtype == 2)
    {
-      goog.log.getLogger('owg.engine3d').warning("** WARNING: not implemented");
+      Logger.get('owg.engine3d').warn("** WARNING: not implemented");
    }
    else if (this.worldtype == 3)
    {
-      goog.log.getLogger('owg.engine3d').warning("** WARNING: not implemented");
+      Logger.get('owg.engine3d').warn("** WARNING: not implemented");
    }
 
 }
@@ -1204,19 +1204,21 @@ engine3d.prototype.SetRenderCallback = function (f)
  */
 engine3d.prototype.SetMouseDownCallback = function (opt_f)
 {
+   let self = this;
    if (this.cbfMouseDown)
    {
-      goog.events.unlistenByKey(this.cbfMouseDown);
-      this.cbfMouseDown = null;
+      this.context.removeEventListener(this.cbfMouseDown);
+      this.cbfMouseDown = undefined;
    }
    if (opt_f)
    {
-      this.cbfMouseDown = goog.events.listen(this.context, goog.events.EventType.MOUSEDOWN, function (e)
+      this.cbfMouseDown = function (e)
       {
-         var x = e.clientX - this.xoffset / 2;
-         var y = e.clientY - this.yoffset / 2;
-         opt_f(e.button, x, y, this);
-      }, false, this);
+         var x = e.clientX - self.xoffset / 2;
+         var y = e.clientY - self.yoffset / 2;
+         opt_f(e.button, x, y, self);
+      }
+      this.context.addEventListener('mousedown', this.cbfMouseDown);
    }
 };
 
@@ -1228,19 +1230,21 @@ engine3d.prototype.SetMouseDownCallback = function (opt_f)
  */
 engine3d.prototype.SetMouseUpCallback = function (opt_f)
 {
+   let self = this;
    if (this.cbfMouseUp)
    {
-      goog.events.unlistenByKey(this.cbfMouseUp);
-      this.cbfMouseUp = null;
+      this.context.removeEventListener('mouseup', this.cbfMouseUp);
+      this.cbfMouseUp = undefined;
    }
    if (opt_f)
    {
-      this.cbfMouseUp = goog.events.listen(this.context, goog.events.EventType.MOUSEUP, function (e)
+      this.cbfMouseUp = function (e)
       {
-         var x = e.clientX - this.xoffset / 2;
-         var y = e.clientY - this.yoffset / 2;
-         opt_f(e.button, x, y, this);
-      }, false, this);
+         var x = e.clientX - self.xoffset / 2;
+         var y = e.clientY - self.yoffset / 2;
+         opt_f(e.button, x, y, self);
+      }
+      this.context.addEventListener('mouseup', this.cbfMouseUp);
    }
 };
 
@@ -1252,19 +1256,21 @@ engine3d.prototype.SetMouseUpCallback = function (opt_f)
  */
 engine3d.prototype.SetMouseMoveCallback = function (opt_f)
 {
+   let self = this;
    if (this.cbfMouseMove)
    {
-      goog.events.unlistenByKey(this.cbfMouseMove);
-      this.cbfMouseMove = null;
+      this.context.removeEventListener('mousemove', this.cbfMouseMove);
+      this.cbfMouseMove = undefined;
    }
    if (opt_f)
    {
-      this.cbfMouseMove = goog.events.listen(this.context, goog.events.EventType.MOUSEMOVE, function (e)
+      this.cbfMouseMove = function (e)
       {
-         var x = e.clientX - this.xoffset / 2;
-         var y = e.clientY - this.yoffset / 2;
-         opt_f(x, y, this);
-      }, false, this);
+         var x = e.clientX - self.xoffset / 2;
+         var y = e.clientY - self.yoffset / 2;
+         opt_f(x, y, self);
+      }
+      this.context.addEventListener('mousemove', this.cbfMouseMove);
    }
 };
 
@@ -1276,19 +1282,20 @@ engine3d.prototype.SetMouseMoveCallback = function (opt_f)
  */
 engine3d.prototype.SetMouseWheelCallback = function (opt_f)
 {
+   let self = this;
    if (this.cbfMouseWheel)
    {
-      goog.events.unlistenByKey(this.cbfMouseWheel);
-      this.cbfMouseWheel = null;
+      this.context.removeEventListener('wheel',this.cbfMouseWheel);
+      this.cbfMouseWheel = undefined;
    }
    if (opt_f)
    {
-      var mouseWheelHandler = new goog.events.MouseWheelHandler(this.context);
-      this.cbfMouseWheel = goog.events.listen(mouseWheelHandler, goog.events.EventType.MOUSEMOVE, function (e)
+      this.cbfMouseWheel = function (e)
       {
          e.preventDefault();
-         opt_f(e.deltaY, this);
-      }, false, this);
+         opt_f(e.deltaY, self);
+      };
+      this.context.addEventListener('wheel', this.cbfMouseWheel, {passive: true});
    }
 };
 
@@ -1313,15 +1320,16 @@ engine3d.prototype.SetKeyDownCallback = function (opt_f)
 {
    if (_gcbfKeyDown)
    {
-      goog.events.unlistenByKey(_gcbfKeyDown);
+      window.removeEventListener('keydown', _gcbfKeyDown);
       _gcbfKeyDown = null;
    }
    if (opt_f)
    {
-      _gcbfKeyDown = goog.events.listen(window, goog.events.EventType.KEYDOWN, function (e)
+      _gcbfKeyDown = function (e)
       {
          opt_f(e.keyCode, this);
-      }, false, this);
+      }
+      window.addEventListener('keydown', _gcbfKeyDown);
    }
 };
 //------------------------------------------------------------------------------
@@ -1334,15 +1342,16 @@ engine3d.prototype.SetKeyUpCallback = function (opt_f)
 {
    if (_gcbfKeyUp)
    {
-      goog.events.unlistenByKey(_gcbfKeyUp);
+      window.removeEventListener(_gcbfKeyUp);
       _gcbfKeyUp = null;
    }
    if (opt_f)
    {
-      _gcbfKeyUp = goog.events.listen(window, goog.events.EventType.KEYUP, function (e)
+      _gcbfKeyUp = function (e)
       {
          opt_f(e.keyCode, this);
-      }, false, this);
+      }
+      window.addEventListener('keyup', _gcbfKeyUp);
    }
 };
 

@@ -11,13 +11,11 @@
 
 goog.provide('owg.NavigationNode');
 
-goog.require('goog.events');
-goog.require('goog.events.EventType');
-goog.require('goog.events.MouseWheelHandler');
 goog.require('owg.ScenegraphNode');
 goog.require('owg.GeoCoord');
 goog.require('owg.mat4');
 goog.require('owg.vec3');
+goog.require('owg.ClosureUtils');
 
 /**
  * Navigation Node. Setup view matrix using a navigation
@@ -223,24 +221,35 @@ function NavigationNode()
       //------------------------------------------------------------------------
       this.OnUnregisterEvents = function ()
       {
-         goog.events.unlistenByKey(this.evtKeyDown);
-         goog.events.unlistenByKey(this.evtKeyUp);
-         goog.events.unlistenByKey(this.evtMouseDown);
-         goog.events.unlistenByKey(this.evtMouseMove);
-         goog.events.unlistenByKey(this.evtMouseUp);
-         goog.events.unlistenByKey(this.evtMouseDoubleClick);
-         goog.events.unlistenByKey(this.evtMouseWheel);
+         window.removeEventListener('keydown', this.evtKeyDown);
+         window.removeEventListener('keyup', this.evtKeyUp);
+         this.evtContext.removeEventListener('mousedown', this.evtMouseDown);
+         this.evtContext.removeEventListener('mousemove', this.evtMouseMove);
+         this.evtContext.removeEventListener('mouseup', this.evtMouseUp);
+         this.evtContext.removeEventListener('dblclick', this.evtDblClick);
+         this.evtContext.removeEventListener('wheel', this.evtMouseWheel);
       }
-      //------------------------------------------------------------------------
-      this.OnRegisterEvents = function(context)
+      //---------------------------------------------------------------------------
+      this.OnRegisterEvents = function (context)
       {
-         this.evtKeyDown = goog.events.listen(window, goog.events.EventType.KEYDOWN, this.OnKeyDown, false, this);
-         this.evtKeyUp = goog.events.listen(window, goog.events.EventType.KEYUP, this.OnKeyUp, false, this);
-         this.evtMouseDown = goog.events.listen(context, goog.events.EventType.MOUSEDOWN, this.OnMouseDown, false, this);
-         this.evtMouseUp = goog.events.listen(context, goog.events.EventType.MOUSEUP, this.OnMouseUp, false, this);
-         this.evtMouseMove = goog.events.listen(context, goog.events.EventType.MOUSEMOVE, this.OnMouseMove, false, this);
-         var mouseWheelHandler = new goog.events.MouseWheelHandler(context);
-         this.evtMouseWheel = goog.events.listen(mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.OnMouseWheel, false, this);
+         let self = this;
+         this.evtContext = context;
+         this.evtKeyDown = (e) => self.OnKeyDown(e);
+         this.evtKeyUp = (e) => self.OnKeyUp(e);
+         this.evtMouseDown = (e) => self.OnMouseDown(e);
+         this.evtMouseMove = (e) => self.OnMouseMove(e);
+         this.evtMouseUp = (e) => self.OnMouseUp(e);
+         // this.evtMouseOut = (e) => self.OnMouseOut(e);
+         this.evtDblClick = (e) => self.OnMouseDoubleClick(e);
+         this.evtMouseWheel = (e) => self.OnMouseWheel(e);
+         window.addEventListener('keydown', this.evtKeyDown);
+         window.addEventListener('keyup', this.evtKeyUp);
+         context.addEventListener('mousedown', this.evtMouseDown);
+         context.addEventListener('mousemove', this.evtMouseMove);
+         context.addEventListener('mouseup', this.evtMouseUp);
+         // context.addEventListener('mouseout', this.evtMouseOut);
+         context.addEventListener('dblclick', this.evtDblClick);
+         context.addEventListener('wheel', this.evtMouseWheel, {passive: true});
       }
       //------------------------------------------------------------------------
       // EVENT: OnMouseWheel
@@ -321,7 +330,7 @@ function NavigationNode()
       // EVENT: OnMouseDown
       this.OnMouseDown = function(e)
       {
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+         if (e.button == ClosureUtils.MouseButton.LEFT)
          {
             this._dSpeed = 0.0;
             this._vR.Set(0,0,0);
@@ -334,7 +343,7 @@ function NavigationNode()
          this._nMouseX = e.offsetX;
          this._nMouseY = e.offsetY;
 
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.MIDDLE))
+         if (e.button == ClosureUtils.MouseButton.MIDDLE)
          {
             return false;
          }
@@ -344,7 +353,7 @@ function NavigationNode()
       // EVENT: OnMouseUp
       this.OnMouseUp = function(e)
       {
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+         if (e.button == ClosureUtils.MouseButton.LEFT)
          {
             this._btn = false;
             this._bDragging = false;
@@ -356,7 +365,7 @@ function NavigationNode()
          this._fSurfacePitchSpeed = 0;
          this._fYawSpeed = 0;
 
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.MIDDLE))
+         if (e.button == ClosureUtils.MouseButton.MIDDLE)
          {
             return false;
          }

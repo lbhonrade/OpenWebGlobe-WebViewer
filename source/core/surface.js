@@ -11,8 +11,7 @@
 
 goog.provide('owg.Surface');
 
-goog.require('goog.log');
-goog.require('goog.json');
+goog.require('owg.Logger');
 goog.require('owg.AABB');
 goog.require('owg.TriangleIntersector');
 goog.require('owg.mat4');
@@ -761,7 +760,7 @@ function _cbfjsondownload(surface)
       else
       {
          var data = surface.http.responseText;
-         var jsonobject = /** @type {ObjectJSON} */ goog.json.parse(data);
+         var jsonobject = /** @type {ObjectJSON} */ JSON.parse(data);
          surface.CreateFromJSONObject(jsonobject, null, null, surface);
       }
    }
@@ -940,7 +939,7 @@ Surface.prototype.cbfTextureLoadCallback_ready = function ()
  */
 Surface.prototype.cbfTextureLoadCallback_failed = function ()
 {
-   goog.log.getLogger('owg.Mesh').warning("Downloading Error: Texture not found...");
+   Logger.get('owg.Mesh').warn("Downloading Error: Texture not found...");
    if (this.cbf)
    {
       this.cbf(this);
@@ -1126,7 +1125,7 @@ Surface.prototype.SetCurrentTriangle = function (triangleNumber)
          break;
 
       default:
-         goog.log.getLogger('owg.Surface').warning("This indexsemantic is not supported for function: Surface.ReadTriangleFromBuffer() ");
+         Logger.get('owg.Surface').warn("This indexsemantic is not supported for function: Surface.ReadTriangleFromBuffer() ");
          break;
 
    }

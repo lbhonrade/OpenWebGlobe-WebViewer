@@ -12,14 +12,10 @@
 goog.provide('owg.LogosNode');
 
 goog.require('goog.debug.ErrorHandler');
-goog.require('goog.events.EventHandler');
-goog.require('goog.events.EventTarget');
-goog.require('goog.events');
-goog.require('goog.events.BrowserEvent');
-goog.require('goog.events.EventType');
 goog.require('owg.ScenegraphNode');
 goog.require('owg.Texture');
 goog.require('owg.vec4');
+goog.require('owg.ClosureUtils');
 
 //------------------------------------------------------------------------
 /**
@@ -441,23 +437,29 @@ function LogosNode()
       //------------------------------------------------------------------------
       this.OnUnregisterEvents = function ()
       {
-         goog.events.unlistenByKey(this.evtMouseDown);
-         goog.events.unlistenByKey(this.evtMouseUp);
-         goog.events.unlistenByKey(this.evtMouseMove);
-         goog.events.unlistenByKey(this.evtMouseDoubleClick);
+         this.evtContext.removeEventListener('mousedown', this.evtMouseDown);
+         this.evtContext.removeEventListener('mousemove', this.evtMouseMove);
+         this.evtContext.removeEventListener('mouseup', this.evtMouseUp);
+         this.evtContext.removeEventListener('dblclick', this.evtDblClick);
       }
-      //------------------------------------------------------------------------
-      this.OnRegisterEvents = function(context)
+      //---------------------------------------------------------------------------
+      this.OnRegisterEvents = function (context)
       {
-         this.evtMouseDown = goog.events.listen(context, goog.events.EventType.MOUSEDOWN, this.OnMouseDown, false, this);
-         this.evtMouseUp = goog.events.listen(context, goog.events.EventType.MOUSEUP, this.OnMouseUp, false, this);
-         this.evtMouseMove = goog.events.listen(context, goog.events.EventType.MOUSEMOVE, this.OnMouseMove, false, this);
-         this.evtMouseDoubleClick = goog.events.listen(context, goog.events.EventType.DBLCLICK, this.OnMouseDoubleClick, false, this);
+         let self = this;
+         this.evtContext = context;
+         this.evtMouseDown = (e) => self.OnMouseDown(e);
+         this.evtMouseMove = (e) => self.OnMouseMove(e);
+         this.evtMouseUp = (e) => self.OnMouseUp(e);
+         this.evtDblClick = (e) => self.OnMouseDoubleClick(e);
+         context.addEventListener('mousedown', this.evtMouseDown);
+         context.addEventListener('mousemove', this.evtMouseMove);
+         context.addEventListener('mouseup', this.evtMouseUp);
+         context.addEventListener('dblclick', this.evtDblClick);
       }
       //------------------------------------------------------------------------
       this.OnMouseDown = function(e)
       {
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+         if (e.button == ClosureUtils.MouseButton.LEFT)
          {
             var xcorr = e.offsetX-this.engine.context.offsetLeft;
             var ycorr = e.offsetY-this.engine.context.offsetTop;
@@ -478,7 +480,7 @@ function LogosNode()
       //------------------------------------------------------------------------
       this.OnMouseUp = function(e)
       {
-         if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+         if (e.button == ClosureUtils.MouseButton.LEFT)
          {
             var xcorr = e.offsetX-this.engine.context.offsetLeft;
             var ycorr = e.offsetY-this.engine.context.offsetTop;

@@ -177,7 +177,7 @@ function _cbfgeometrydownload(geometry)
       else
       {
          var data = geometry.http.responseText;
-         var jsonobject = goog.json.parse(data);
+         var jsonobject = JSON.parse(data);
          geometry.CreateFromJSONObject(jsonobject);
       }
    }

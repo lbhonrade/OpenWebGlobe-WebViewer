@@ -11,8 +11,7 @@
 
 goog.provide('owg.DatasetInfo');
 
-goog.require('goog.log');
-goog.require('goog.json');
+goog.require('owg.Logger');
 
 /**
  * @typedef {{
@@ -91,7 +90,7 @@ function _cbfdsidownload(dsi)
          var obj;
          try
          {
-            obj=/** @type {DatasetInfoJSON} */ goog.json.parse(data);
+            obj=/** @type {DatasetInfoJSON} */ JSON.parse(data);
          }
          catch(e)
          {
@@ -165,14 +164,14 @@ function _cbfdsidownload(dsi)
                dsi.sFileExtension = ".json"; 
             }
             
-            //goog.log.getLogger('owg.Datasetinfo').info("Datasetinfo: " + dsi.sLayerName + "(" + dsi.sTileFormat + ")" + dsi.sLayerCopyright);
+            //Logger.get('owg.Datasetinfo').info("Datasetinfo: " + dsi.sLayerName + "(" + dsi.sTileFormat + ")" + dsi.sLayerCopyright);
             
             dsi.bReady = true;
          }
       }
       else
       {
-         goog.log.getLogger('owg.Datasetinfo').warning("DATASET DOWNLOAD FAILED");
+         Logger.get('owg.Datasetinfo').warn("DATASET DOWNLOAD FAILED");
          dsi.bFailed = true;
       }
    }

@@ -11,7 +11,7 @@
 
 goog.provide('owg.Billboard');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.CanvasTexture');
 goog.require('owg.Font');
 goog.require('owg.GeoCoord');

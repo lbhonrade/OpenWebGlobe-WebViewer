@@ -13,7 +13,7 @@ goog.provide('owg.ogTexture');
 
 goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
-goog.require('goog.log');
+goog.require('owg.Logger');
 
 //------------------------------------------------------------------------------
 /**
@@ -75,19 +75,19 @@ ogTexture.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no options for texture creation!");
+      Logger.get('owg.ogTexture').warn("** ERROR: no options for texture creation!");
       return;  // no options!!
    }
    
    if (this.parent == null)
    {
-      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no parent!");
+      Logger.get('owg.ogTexture').warn("** ERROR: no parent!");
       return;
    }
    
    if (this.parent.type != OG_OBJECT_SCENE)
    {
-      goog.log.getLogger('owg.ogTexture').warning("** ERROR: parent is not scene!");
+      Logger.get('owg.ogTexture').warn("** ERROR: parent is not scene!");
       return;
    }
    

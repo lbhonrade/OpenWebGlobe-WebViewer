@@ -14,6 +14,7 @@ goog.provide('owg.ogWorld');
 goog.require('owg.ObjectDefs');
 goog.require('owg.ogObject');
 goog.require('owg.GlobeRenderer');
+goog.require('owg.Logger');
 
 //------------------------------------------------------------------------------
 /**
@@ -37,7 +38,7 @@ ogWorld.prototype.ParseOptions = function(options)
 {
    if (options == null)
    {
-      goog.log.getLogger('owg.ogTexture').warning("** ERROR: no options for texture creation!");
+      Logger.get('owg.ogTexture').warn("** ERROR: no options for texture creation!");
       return;  // no options!!
    }
 

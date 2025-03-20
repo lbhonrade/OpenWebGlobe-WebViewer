@@ -11,7 +11,7 @@
 
 goog.provide('owg.EarthPolyline');
 
-goog.require('goog.log');
+goog.require('owg.Logger');
 goog.require('owg.GeoCoord');
 goog.require('owg.mat4');
 

@@ -23,16 +23,13 @@
 
 goog.provide('owg.GlobeNavigationNode');
 
-goog.require('goog.events');
-goog.require('goog.events.BrowserEvent.MouseButton');
-goog.require('goog.events.EventType');
-goog.require('goog.events.MouseWheelHandler');
 goog.require('owg.GeoCoord');
 goog.require('owg.mat4');
 goog.require('owg.NavigationNode');
 goog.require('owg.ScenegraphNode');
 goog.require('owg.vec3');
 goog.require('owg.Mercator');
+goog.require('owg.ClosureUtils');
 
 /**
  * Navigation Node. Setup view matrix using Google Earth-style navigation
@@ -283,28 +280,35 @@ function GlobeNavigationNode()
    //---------------------------------------------------------------------------
    this.OnUnregisterEvents = function ()
    {
-      goog.events.unlistenByKey(this.evtKeyDown);
-      goog.events.unlistenByKey(this.evtKeyUp);
-      goog.events.unlistenByKey(this.evtMouseDown);
-      goog.events.unlistenByKey(this.evtMouseMove);
-      goog.events.unlistenByKey(this.evtMouseUp);
-      goog.events.unlistenByKey(this.evtMouseDoubleClick);
-      goog.events.unlistenByKey(this.evtMouseWheel);
-
+      window.removeEventListener('keydown', this.evtKeyDown);
+      window.removeEventListener('keyup', this.evtKeyUp);
+      this.evtContext.removeEventListener('mousedown', this.evtMouseDown);
+      this.evtContext.removeEventListener('mousemove', this.evtMouseMove);
+      this.evtContext.removeEventListener('mouseup', this.evtMouseUp);
+      this.evtContext.removeEventListener('dblclick', this.evtDblClick);
+      this.evtContext.removeEventListener('wheel', this.evtMouseWheel);
    }
    //---------------------------------------------------------------------------
    this.OnRegisterEvents = function (context)
    {
-      this.evtKeyDown = goog.events.listen(window, goog.events.EventType.KEYDOWN, this.OnKeyDown, false, this);
-      this.evtKeyUp = goog.events.listen(window, goog.events.EventType.KEYUP, this.OnKeyUp, false, this);
-      this.evtMouseDown = goog.events.listen(context, goog.events.EventType.MOUSEDOWN, this.OnMouseDown, false, this);
-      this.evtMouseMove = goog.events.listen(context, goog.events.EventType.MOUSEMOVE, this.OnMouseMove, false, this);
-      this.evtMouseUp = goog.events.listen(context, goog.events.EventType.MOUSEUP, this.OnMouseUp, false, this);
-      this.evtMouseOut = goog.events.listen(context, goog.events.EventType.MOUSEOUT, this.OnMouseOut, false, this);
-      this.evtMouseDoubleClick = goog.events.listen(context, goog.events.EventType.DBLCLICK, this.OnMouseDoubleClick, false, this);
-      var mouseWheelHandler = new goog.events.MouseWheelHandler(context);
-      this.evtMouseWheel = goog.events.listen(mouseWheelHandler, goog.events.MouseWheelHandler.EventType.MOUSEWHEEL, this.OnMouseWheel, false, this);
-
+      let self = this;
+      this.evtContext = context;
+      this.evtKeyDown = (e) => self.OnKeyDown(e);
+      this.evtKeyUp = (e) => self.OnKeyUp(e);
+      this.evtMouseDown = (e) => self.OnMouseDown(e);
+      this.evtMouseMove = (e) => self.OnMouseMove(e);
+      this.evtMouseUp = (e) => self.OnMouseUp(e);
+      // this.evtMouseOut = (e) => self.OnMouseOut(e);
+      this.evtDblClick = (e) => self.OnMouseDoubleClick(e);
+      this.evtMouseWheel = (e) => self.OnMouseWheel(e);
+      window.addEventListener('keydown', this.evtKeyDown);
+      window.addEventListener('keyup', this.evtKeyUp);
+      context.addEventListener('mousedown', this.evtMouseDown);
+      context.addEventListener('mousemove', this.evtMouseMove);
+      context.addEventListener('mouseup', this.evtMouseUp);
+      // context.addEventListener('mouseout', this.evtMouseOut);
+      context.addEventListener('dblclick', this.evtDblClick);
+      context.addEventListener('wheel', this.evtMouseWheel, {passive: true});
    }
    //---------------------------------------------------------------------------
    this._OnInputChange = function ()
@@ -607,18 +611,18 @@ function GlobeNavigationNode()
       this._nMouseX = e.offsetX - this.engine.context.offsetLeft;
       this._nMouseY = e.offsetY - this.engine.context.offsetTop;
 
-      if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+      if (e.button == ClosureUtils.MouseButton.LEFT)
       {
          this._inputs |= GlobeNavigationNode.INPUTS.MOUSE_LEFT;
          document.body.style.cursor = 'move';
          this._bLClick = true;
       }
-      else if (e.isButton(goog.events.BrowserEvent.MouseButton.MIDDLE))
+      else if (e.button == ClosureUtils.MouseButton.MIDDLE)
       {
          //this._inputs |= GlobeNavigationNode.INPUTS.MOUSE_MIDDLE;
          return false;
       }
-      else if (e.isButton(goog.events.BrowserEvent.MouseButton.RIGHT))
+      else if (e.button == ClosureUtils.MouseButton.RIGHT)
       {
          this._inputs |= GlobeNavigationNode.INPUTS.MOUSE_RIGHT;
       }
@@ -637,19 +641,19 @@ function GlobeNavigationNode()
       this._nMouseX = e.offsetX - this.engine.context.offsetLeft;
       this._nMouseY = e.offsetY - this.engine.context.offsetTop;
 
-      if (e.isButton(goog.events.BrowserEvent.MouseButton.LEFT))
+      if (e.button == ClosureUtils.MouseButton.LEFT)
       {
          this._inputs &= ~GlobeNavigationNode.INPUTS.MOUSE_LEFT;
          this._bHit = false;
          document.body.style.cursor = 'default';
          this._bLClick = false;
       }
-      else if (e.isButton(goog.events.BrowserEvent.MouseButton.MIDDLE))
+      else if (e.button == ClosureUtils.MouseButton.MIDDLE)
       {
          //this._inputs &= ~GlobeNavigationNode.INPUTS.MOUSE_MIDDLE;
          return false;
       }
-      else if (e.isButton(goog.events.BrowserEvent.MouseButton.RIGHT))
+      else if (e.button == ClosureUtils.MouseButton.RIGHT)
       {
          this._inputs &= ~GlobeNavigationNode.INPUTS.MOUSE_RIGHT;
       }
